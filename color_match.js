@@ -5,6 +5,11 @@ function playGame() {
 	var matchCount = 0;
 	var guesses = 0;
 	var clickedCards = [];
+	var totalTime = 0;
+
+	setInterval(function() {
+		totalTime += 1;
+	}, 1000);
 
 	function card(number,color) {
 		this.number = number;
@@ -91,7 +96,7 @@ function playGame() {
 					matchCount += 1;
 					clickedCards = [];
 					if (matchCount === 8) {
-						alert("Nice job!  It took you " + guesses + " guesses.");
+						alert("Nice job!  It took you " + totalTime + " seconds and " + guesses + " guesses.");
 						location.reload();
 					}
 				}
