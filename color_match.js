@@ -1,8 +1,11 @@
-$(document).ready(function() {
-	var cardTable = [];
+$(document).ready(playGame) 
 
+function playGame() {
+	var cardTable = [];
 	var matchCount = 0;
-	
+	var guesses = 0;
+	var clickedCards = [];
+
 	function card(number,color) {
 		this.number = number;
 		this.color = color;
@@ -29,8 +32,6 @@ $(document).ready(function() {
 		$('#back' + i).css("background-color",cardTable[i].color);
 		$('#back' + i).css("z-index","1");
 	}
-
-	var clickedCards = [];
 
 	$('#front1').click(function() {
 		cardFlip(1);
@@ -82,17 +83,23 @@ $(document).ready(function() {
 	});
 
 	function cardFlip(cardNumber) {
-		$('#front' + cardNumber).animate({ "width": "0px" }, 500);
-		clickedCards.push(cardNumber);
-		if (clickedCards.length === 2) {
-			if (cardTable[clickedCards[0]].color === cardTable[clickedCards[1]].color){
-				matchCount += 1;
-				clickedCards = [];
+		$('#front' + cardNumber).animate({ "width": "0px" }, 500, function() {
+			clickedCards.push(cardNumber);
+			if (clickedCards.length === 2) {
+				guesses += 1;
+				if (cardTable[clickedCards[0]].color === cardTable[clickedCards[1]].color){
+					matchCount += 1;
+					clickedCards = [];
+					if (matchCount === 8) {
+						alert("Nice job!  It took you " + guesses + " guesses.");
+						location.reload();
+					}
+				}
+				else {
+					hideCards(clickedCards);
+				}
 			}
-			else {
-				hideCards(clickedCards);
-			}
-		}
+		});
 	}
 
 	function hideCards(cardNumbers) {
@@ -101,4 +108,4 @@ $(document).ready(function() {
 		} 
 		clickedCards = [];
 	}
-});
+}
